@@ -6,8 +6,15 @@ from PIL import Image
 
 # Load models using context managers
 def load_model(filename):
-    with open(filename, "rb") as file:
-        return pickle.load(file)
+    try:
+        with open(filename, "rb") as file:
+            return pickle.load(file)
+    except FileNotFoundError:
+        print(f"File {filename} not found.")
+    except pickle.UnpicklingError:
+        print(f"Error unpickling file {filename}.")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 stacking_model_N = load_model("stacking_model_N.pkl")
 stacking_model_P = load_model("stacking_model_P.pkl")
